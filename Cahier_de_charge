@@ -1,0 +1,338 @@
+UNIVERSITÉ / ÉTABLISSEMENT
+Faculté des Sciences et Techniques
+Département de Mathématiques Informatiques
+
+
+
+CAHIER DES CHARGES
+
+Mémoire pour l'obtention de la
+LICENCE EN MATHÉMATIQUES INFORMATIQUES
+
+
+Thème :
+Conception et développement d'une plateforme
+e-commerce sécurisée au Bénin avec Java
+
+
+
+Présenté par :
+FOUSSENI Ahamadou 
+
+Encadreur :
+M. Gilbert CAPOCHICHI
+
+
+Année académique : 2025 – 2026
+
+
+I. PRÉSENTATION DU PROJET
+Champ
+Information
+
+Intitulé
+Plateforme e-commerce sécurisée au Bénin
+
+Nature
+Cahier des charges – Mémoire de Licence
+
+Domaine
+Commerce électronique / Génie logiciel Java
+
+Langage principal
+Java (Spring Boot + Thymeleaf / JSP)
+
+Zone cible
+République du Bénin
+
+Date
+03/03/2026
+
+
+II. CONTEXTE ET PROBLÉMATIQUE
+2.1 Contexte général
+L'essor du numérique en Afrique de l'Ouest, et particulièrement au Bénin, a transformé les habitudes de consommation. De nombreux citoyens recourent aux réseaux sociaux (Facebook, WhatsApp) pour acheter et vendre, s'exposant à de multiples risques économiques et sécuritaires.
+2.2 Problèmes identifiés
+Insécurité des paiements en espèces : risques de vol, perte et contrefaçon.
+Absence d'une plateforme centralisée pour localiser des produits spécifiques.
+Arnaques fréquentes lors des achats via les réseaux sociaux.
+Manque de confiance : aucun système de vérification des vendeurs.
+Absence de traçabilité et de recours légal en cas de litige.
+2.3 Justification
+Ce projet propose une solution web Java robuste, sécurisée et adaptée au contexte béninois. Il démontre comment les technologies Java Enterprise peuvent résoudre des problèmes économiques concrets, tout en constituant un apport académique solide pour l'obtention de la Licence en Mathématiques Informatiques.
+III. OBJECTIFS DU PROJET
+3.1 Objectif général
+Concevoir, développer et déployer une application web e-commerce sécurisée en Java, permettant aux utilisateurs béninois d'acheter des produits en ligne via un système de paiement fiable et une interface intuitive.
+3.2 Objectifs spécifiques
+Développer une application web Java avec Spring Boot côté serveur.
+Mettre en place une architecture MVC claire et maintenable.
+Intégrer un système d'authentification sécurisé avec Spring Security.
+Implémenter un paiement en ligne (Mobile Money, carte bancaire) via API sécurisée.
+Concevoir une interface utilisateur responsive avec Thymeleaf ou JSP.
+Gérer les données avec JPA/Hibernate et une base de données relationnelle.
+Assurer la sécurité : HTTPS, protection CSRF, XSS, injection SQL.
+Fournir un tableau de bord administrateur complet.
+IV. PÉRIMÈTRE ET PORTÉE
+4.1 Dans le périmètre (In Scope)
+Application web Java (Spring Boot) accessible via navigateur
+Gestion des comptes (acheteurs et administrateurs)
+Catalogue de produits avec catégories et recherche
+Panier d'achat et processus de commande
+Paiement sécurisé : Mobile Money (MTN, Moov) et carte bancaire
+Tableau de bord administrateur
+Notifications par e-mail (JavaMail / Spring Mail)
+Suivi et historique des commandes
+4.2 Hors périmètre (Out of Scope)
+Application mobile (Android/iOS)
+Extension hors du territoire béninois
+Marketplace multi-vendeurs (version future)
+Gestion logistique de livraison physique
+V. ACTEURS ET PARTIES PRENANTES
+Acteur
+Rôle
+Interactions avec le système
+
+Acheteur (Client)
+Utilisateur final
+Inscription, navigation, commande, paiement, suivi
+
+Administrateur
+Gestionnaire plateforme
+Gestion produits, commandes, utilisateurs, stats
+
+Passerelle de paiement
+Prestataire financier
+Traitement sécurisé des transactions
+
+Développeur / Étudiant
+Concepteur du système
+Conception, développement, maintenance
+
+
+VI. BESOINS FONCTIONNELS
+6.1 Module Authentification & Utilisateurs
+Inscription avec validation par e-mail (Spring Mail)
+Connexion sécurisée via Spring Security (BCrypt password hashing)
+Gestion des rôles : ROLE_USER, ROLE_ADMIN
+Récupération de mot de passe (token JWT temporaire)
+Modification du profil (nom, adresse, téléphone)
+Protection CSRF sur tous les formulaires
+6.2 Module Catalogue de Produits
+Affichage des produits par catégories
+Moteur de recherche avec filtres (prix, catégorie, disponibilité)
+Fiche produit détaillée (images, description, prix, stock)
+Pagination des résultats (Spring Data JPA Pageable)
+Gestion des images produits (upload et stockage serveur)
+6.3 Module Panier et Commandes
+Gestion du panier en session (HttpSession Java)
+Ajout, modification, suppression d'articles
+Récapitulatif avant validation de commande
+Génération d'un identifiant de commande unique (UUID)
+Historique des commandes par utilisateur
+Statuts de commande : En attente, Confirmée, Expédiée, Livrée, Annulée
+6.4 Module Paiement Sécurisé
+Intégration API CinetPay (Mobile Money : MTN MoMo, Moov Money)
+Paiement par carte bancaire (Visa/MasterCard via HTTPS)
+Vérification de la signature des webhooks de paiement
+Confirmation par e-mail après paiement (JavaMail)
+Génération de facture PDF (iText ou Apache PDFBox)
+Gestion des remboursements et annulations
+6.5 Module Administration
+Tableau de bord avec statistiques (CA, commandes, clients)
+CRUD complet sur les produits et catégories
+Gestion des commandes (validation, expédition, annulation)
+Gestion des comptes utilisateurs (activation/désactivation)
+Exportation des données (CSV/Excel avec Apache POI)
+6.6 Module Notifications
+E-mail de bienvenue à l'inscription (Spring Mail + templates Thymeleaf)
+Confirmation de commande et de paiement par e-mail
+Notification de changement de statut de livraison
+VII. BESOINS NON FONCTIONNELS
+Critère
+Exigence
+Indicateur de mesure
+
+Sécurité
+HTTPS/TLS sur toutes les communications
+Certificat SSL actif
+
+Sécurité
+Spring Security : authentification, autorisation, CSRF
+Tests de sécurité OWASP
+
+Sécurité
+Protection injections SQL via JPA/Hibernate
+Aucune requête SQL brute
+
+Performance
+Temps de réponse des pages < 3 secondes
+Tests JMeter avec 100 utilisateurs
+
+Disponibilité
+Taux de disponibilité ≥ 99%
+Monitoring continu
+
+Ergonomie
+Interface responsive (Bootstrap) mobile/desktop
+Tests multi-navigateurs
+
+Maintenabilité
+Code Java documenté (Javadoc)
+Couverture Javadoc > 80%
+
+
+VIII. ARCHITECTURE TECHNIQUE JAVA
+8.1 Stack technologique Java
+Couche
+Technologie / Framework
+Rôle
+
+Langage
+Java 17 (LTS)
+Langage principal du projet
+
+Framework Web
+Spring Boot 3.x
+Serveur web, API REST, MVC
+
+Sécurité
+Spring Security 6
+Authentification, autorisation, CSRF
+
+Template Engine
+Thymeleaf
+Génération des pages HTML côté serveur
+
+ORM
+JPA / Hibernate
+Mapping objet-relationnel, requêtes DB
+
+Base de données
+MySQL 8 / PostgreSQL
+Stockage des données
+
+Paiement
+API CinetPay (REST)
+Paiements Mobile Money et carte
+
+E-mail
+Spring Mail + JavaMail
+Envoi de notifications e-mail
+
+PDF
+iText 7 / Apache PDFBox
+Génération de factures PDF
+
+CSS/UI
+Bootstrap 5
+Interface responsive
+
+Build Tool
+Maven / Gradle
+Gestion des dépendances
+
+Serveur
+Apache Tomcat (embarqué)
+Déploiement de l'application
+
+Hébergement
+VPS Linux (Ubuntu)
+Serveur de production
+
+
+8.2 Architecture MVC avec Spring Boot
+L'application suit le patron MVC (Modèle-Vue-Contrôleur) imposé par Spring Boot :
+Modèle (Model) : Entités JPA (@Entity) mappées sur les tables de la BDD — Produit, Commande, Utilisateur, Paiement.
+Vue (View) : Pages HTML générées par Thymeleaf avec Bootstrap 5 pour le responsive design.
+Contrôleur (Controller) : Classes annotées @Controller et @RestController gérant les requêtes HTTP.
+Couche Service : Classes @Service implémentant la logique métier (gestion commandes, paiement).
+Couche Repository : Interfaces JpaRepository pour l'accès aux données.
+8.3 Diagramme de packages Java
+Organisation du projet Spring Boot :
+com.ecommerce.benin.model — Entités JPA
+com.ecommerce.benin.repository — Interfaces JPA Repository
+com.ecommerce.benin.service — Logique métier
+com.ecommerce.benin.controller — Contrôleurs MVC
+com.ecommerce.benin.security — Configuration Spring Security
+com.ecommerce.benin.config — Configuration générale (paiement, mail)
+com.ecommerce.benin.dto — Objets de transfert de données
+resources/templates — Vues Thymeleaf (.html)
+resources/static — CSS, JS, images
+IX. CONTRAINTES DU PROJET
+9.1 Contraintes techniques
+Java 17 LTS minimum (compatibilité Spring Boot 3.x)
+Compatibilité navigateurs modernes (Chrome, Firefox, Edge)
+Optimisation pour réseaux à débit limité (compression GZIP Spring Boot)
+Base de données normalisée (3NF minimum)
+9.2 Contraintes réglementaires
+Respect de la législation béninoise sur le commerce électronique
+Protection des données personnelles (chiffrement, accès restreint)
+Affichage obligatoire des CGV et politique de confidentialité
+9.3 Contraintes académiques
+Développement en Java dans le cadre du mémoire de Licence
+Documentation complète : Javadoc, rapport UML, diagrammes de classes
+Respect du calendrier académique et des délais de soutenance
+Code source versionné (Git/GitHub)
+X. PLANIFICATION PRÉVISIONNELLE
+Phase
+Activités
+Durée
+
+Phase 1 – Analyse
+Recueil besoins, étude existant, UML Use Case
+2 semaines
+
+Phase 2 – Conception
+Diagramme de classes, BDD, maquettes UI/UX
+2 semaines
+
+Phase 3 – Dev Back-end
+Spring Boot, JPA/Hibernate, Spring Security, API paiement
+4 semaines
+
+Phase 4 – Dev Front-end
+Thymeleaf + Bootstrap, pages et formulaires
+2 semaines
+
+Phase 5 – Intégration
+Connexion front/back, tests d'intégration
+2 semaines
+
+Phase 6 – Tests
+Tests unitaires JUnit, tests de charge JMeter, sécurité
+2 semaines
+
+Phase 7 – Déploiement
+VPS Linux, Tomcat, configuration HTTPS
+1 semaine
+
+Phase 8 – Rédaction
+Rapport de mémoire et soutenance
+3 semaines
+
+
+XI. LIVRABLES ATTENDUS
+L1 – Cahier des charges validé (ce document)
+L2 – Diagrammes UML : cas d'utilisation, classes, séquences, déploiement
+L3 – Maquettes graphiques des interfaces (wireframes)
+L4 – Code source Java complet (Spring Boot, Maven) versionné sur Git
+L5 – Scripts SQL de création et peuplement de la base de données
+L6 – Tests unitaires JUnit 5 avec rapport de couverture
+L7 – Manuel d'utilisation et guide d'installation
+L8 – Rapport de mémoire complet et structuré
+L9 – Présentation PowerPoint pour la soutenance
+XII. GLOSSAIRE
+Spring Boot : Framework Java simplifiant le développement d'applications web autonomes.
+Spring Security : Module Spring gérant l'authentification et l'autorisation dans les apps Java.
+JPA/Hibernate : API Java et son implémentation pour le mapping objet-relationnel (ORM).
+Thymeleaf : Moteur de templates Java pour générer des pages HTML côté serveur.
+MVC : Modèle-Vue-Contrôleur : patron d'architecture logicielle.
+Maven : Outil de gestion de build et de dépendances pour projets Java.
+CSRF : Cross-Site Request Forgery : attaque web contre laquelle Spring Security protège.
+Mobile Money : Paiement mobile : MTN MoMo, Moov Money — largement utilisé au Bénin.
+JUnit : Framework de tests unitaires pour Java.
+BCrypt : Algorithme de hachage sécurisé pour les mots de passe, utilisé par Spring Security.
+API REST : Interface web permettant la communication entre systèmes via HTTP/JSON.
+UML : Unified Modeling Language : langage de modélisation des systèmes logiciels.
+
+Document rédigé le 03/03/2026
