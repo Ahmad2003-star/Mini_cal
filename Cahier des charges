@@ -1,0 +1,441 @@
+UNIVERSITÉ / ÉTABLISSEMENT
+Faculté des Sciences et Techniques
+Département de Mathématiques Informatiques
+
+
+
+CAHIER DES CHARGES
+
+Mémoire pour l'obtention de la
+LICENCE EN MATHÉMATIQUES INFORMATIQUES
+
+
+Thème :
+Conception et mise en œuvre d'une application
+de prescription numérique et de délivrance
+pharmaceutique via QR-code
+
+
+
+Présenté par :
+FOUSSENI Ahamadou 
+
+Encadreur :
+Dr.Gilbert CAPO CHICHI
+
+
+Année académique : 2025 – 2026
+
+
+TABLE DES MATIÈRES
+I.  Présentation du projet
+II.  Contexte et problématique
+III.  Objectifs du projet
+IV.  Périmètre et portée
+V.  Acteurs et parties prenantes
+VI.  Besoins fonctionnels
+VII.  Besoins non fonctionnels
+VIII.  Architecture technique Java
+IX.  Fonctionnement du QR-code médical
+X.  Contraintes du projet
+XI.  Planification prévisionnelle
+XII.  Livrables attendus
+XIII.  Glossaire
+
+
+I. PRÉSENTATION DU PROJET
+Champ
+Information
+
+Intitulé
+Application de prescription numérique et délivrance pharmaceutique via QR-code
+
+Nature
+Cahier des charges – Mémoire de Licence
+
+Domaine
+Santé numérique / Génie logiciel Java
+
+Langage principal
+Java (Spring Boot + Thymeleaf)
+
+Technologie clé
+Génération et lecture de QR-code (ZXing Library)
+
+Zone cible
+République du Bénin
+
+Date
+03/03/2026
+
+
+II. CONTEXTE ET PROBLÉMATIQUE
+2.1 Contexte général
+Le secteur de la santé au Bénin fait face à de nombreux défis liés à la gestion manuelle des prescriptions médicales. Les ordonnances papier, encore largement utilisées, engendrent des risques importants pour la santé publique et la sécurité des patients.
+Par ailleurs, la transformation numérique du secteur médical est une priorité mondiale. L'introduction de solutions technologiques comme les QR-codes dans le circuit ordonnance-pharmacie représente une avancée majeure pour améliorer la qualité des soins.
+2.2 Problèmes identifiés
+Falsification et contrefaçon des ordonnances papier par des tiers malveillants.
+Illisibilité des prescriptions manuscrites pouvant entraîner des erreurs de délivrance.
+Absence de traçabilité : impossibilité de vérifier si une ordonnance a déjà été délivrée.
+Perte ou détérioration physique des ordonnances papier.
+Difficulté pour le pharmacien de vérifier l'authenticité de la prescription.
+Rupture de communication entre médecins, pharmaciens et patients.
+Risque de délivrance multiple du même médicament avec une seule ordonnance.
+2.3 Justification du projet
+Ce projet propose de numériser entièrement le circuit de prescription médicale en Java, en utilisant les QR-codes comme vecteur sécurisé de transmission des ordonnances entre le médecin, le patient et le pharmacien. Cette solution garantit l'authenticité, la traçabilité et la sécurité de chaque prescription.
+III. OBJECTIFS DU PROJET
+3.1 Objectif général
+Concevoir et développer une application web Java permettant aux médecins de créer des prescriptions numériques sécurisées, encodées en QR-code, et aux pharmaciens de les scanner, valider et enregistrer les délivrances médicamenteuses.
+3.2 Objectifs spécifiques
+Permettre au médecin de rédiger, signer numériquement et générer une ordonnance sous forme de QR-code.
+Permettre au patient de consulter son ordonnance numérique et de la présenter à la pharmacie.
+Permettre au pharmacien de scanner le QR-code et de valider la délivrance des médicaments.
+Assurer l'unicité de délivrance : une ordonnance ne peut être honorée qu'une seule fois.
+Garantir l'authenticité des prescriptions via un système de signature numérique.
+Conserver un historique complet des prescriptions et délivrances.
+Sécuriser toutes les données médicales sensibles (conformité RGPD/législation locale).
+Fournir un tableau de bord de statistiques pour l'administrateur.
+IV. PÉRIMÈTRE ET PORTÉE
+4.1 Dans le périmètre (In Scope)
+Application web Java (Spring Boot) accessible via navigateur
+Espace médecin : rédaction et génération de prescriptions QR-code
+Espace patient : consultation et téléchargement de l'ordonnance numérique
+Espace pharmacien : scan/lecture QR-code et validation de délivrance
+Espace administrateur : gestion des utilisateurs et statistiques
+Génération de QR-code (bibliothèque ZXing / QRGen)
+Authentification sécurisée par rôles (Spring Security)
+Historique et traçabilité des prescriptions et délivrances
+Notifications par e-mail (Spring Mail)
+Export PDF des ordonnances (iText / Apache PDFBox)
+4.2 Hors périmètre (Out of Scope)
+Application mobile native (Android/iOS) — version future
+Intégration avec des systèmes hospitaliers existants (HIS/LIS)
+Téléconsultation et visioconférence médicale
+Gestion des stocks pharmaceutiques de la pharmacie
+Extension internationale hors du Bénin
+V. ACTEURS ET PARTIES PRENANTES
+Acteur
+Rôle
+Actions principales
+
+Médecin / Prescripteur
+Crée les ordonnances numériques
+Connexion, rédaction prescription, génération QR-code, historique
+
+Pharmacien
+Valide et délivre les médicaments
+Scan QR-code, vérification, validation délivrance, historique
+
+Patient
+Bénéficiaire de l'ordonnance
+Consultation ordonnance, téléchargement PDF/QR-code
+
+Administrateur
+Gère la plateforme
+Gestion utilisateurs, statistiques, configuration système
+
+
+VI. BESOINS FONCTIONNELS
+6.1 Module Authentification & Gestion des Rôles
+Inscription avec validation par e-mail selon le rôle (Médecin, Pharmacien, Administrateur)
+Connexion sécurisée via Spring Security (BCrypt + JWT ou Session)
+Gestion des rôles : ROLE_MEDECIN, ROLE_PHARMACIEN, ROLE_PATIENT, ROLE_ADMIN
+Récupération de mot de passe par token temporaire
+Déconnexion sécurisée et invalidation de session
+Vérification et validation des comptes professionnels (numéro d'ordre médecin/pharmacien)
+6.2 Module Prescription Médicale (Espace Médecin)
+Formulaire de création d'ordonnance : patient, médicaments, dosages, durée, instructions
+Recherche et sélection du patient dans la base de données
+Ajout de plusieurs médicaments par ordonnance (liste dynamique)
+Validation et signature numérique de l'ordonnance
+Génération automatique du QR-code encodant les données de l'ordonnance
+Export de l'ordonnance en PDF avec QR-code intégré
+Historique de toutes les prescriptions du médecin
+Consultation du statut de chaque ordonnance (En attente / Délivrée / Expirée)
+6.3 Module QR-code
+Génération du QR-code avec la bibliothèque Java ZXing (Zebra Crossing)
+Encodage sécurisé : ID unique ordonnance + hash de vérification + horodatage
+QR-code à usage unique : invalidé après première délivrance
+Date d'expiration du QR-code (validité configurable : ex. 30 jours)
+Téléchargement du QR-code en PNG ou intégré dans le PDF de l'ordonnance
+Décodage et lecture du QR-code côté pharmacien (via webcam ou fichier image)
+6.4 Module Délivrance Pharmaceutique (Espace Pharmacien)
+Interface de scan QR-code via webcam (bibliothèque JavaScript jsQR côté front)
+Ou saisie manuelle du code unique de l'ordonnance
+Vérification automatique de l'authenticité et de la validité du QR-code
+Affichage des détails de la prescription : patient, médecin, médicaments, dosages
+Confirmation de délivrance avec enregistrement horodaté
+Impossibilité de valider deux fois la même ordonnance (unicité garantie)
+Historique de toutes les délivrances effectuées
+Signalement d'une ordonnance suspecte à l'administrateur
+6.5 Module Patient
+Consultation de la liste de ses ordonnances numériques
+Téléchargement du PDF / QR-code de chaque ordonnance
+Visualisation du statut : En attente de délivrance / Délivrée / Expirée
+Historique médical personnel (prescriptions reçues)
+6.6 Module Administration
+Tableau de bord : nombre de prescriptions, délivrances, utilisateurs actifs
+Gestion des comptes : médecins, pharmaciens, patients (activation/suspension)
+Consultation de l'historique global des prescriptions et délivrances
+Gestion des médicaments référencés dans le système
+Détection et traitement des ordonnances signalées comme suspectes
+Exportation des rapports (CSV, Excel avec Apache POI)
+6.7 Module Notifications
+E-mail de confirmation de création de compte
+Notification au patient lors de la création d'une ordonnance (Spring Mail)
+Alerte au médecin lors de la délivrance de son ordonnance
+Notification d'expiration d'ordonnance proche
+VII. BESOINS NON FONCTIONNELS
+Critère
+Exigence
+Indicateur
+
+Sécurité
+HTTPS/TLS sur toutes les communications
+Certificat SSL actif
+
+Sécurité
+Spring Security : authentification par rôles, CSRF
+Tests OWASP Top 10
+
+Sécurité
+Données médicales chiffrées en base (AES-256)
+Aucune donnée sensible en clair
+
+Intégrité
+QR-code signé numériquement (hash SHA-256)
+Vérification d'authenticité systématique
+
+Performance
+Génération QR-code < 1 seconde
+Tests unitaires JUnit
+
+Performance
+Temps de réponse pages < 3 secondes
+Tests JMeter
+
+Disponibilité
+Disponibilité ≥ 99%
+Monitoring continu
+
+Ergonomie
+Interface responsive (Bootstrap 5)
+Tests multi-navigateurs
+
+Traçabilité
+Journalisation de toutes les actions sensibles
+Logs Spring AOP
+
+Confidentialité
+Accès aux données strictement limité par rôle
+Tests de contrôle d'accès
+
+
+VIII. ARCHITECTURE TECHNIQUE JAVA
+8.1 Stack technologique
+Couche
+Technologie
+Rôle
+
+Langage
+Java 17 LTS
+Langage principal
+
+Framework Web
+Spring Boot 3.x
+Serveur, MVC, REST API
+
+Sécurité
+Spring Security 6
+Authentification, rôles, CSRF
+
+Template Engine
+Thymeleaf
+Pages HTML côté serveur
+
+ORM
+JPA / Hibernate
+Mapping objet-relationnel
+
+Base de données
+MySQL 8 / PostgreSQL
+Stockage des données
+
+QR-code
+ZXing (Zebra Crossing)
+Génération et décodage QR-code
+
+PDF
+iText 7 / Apache PDFBox
+Export ordonnances PDF
+
+E-mail
+Spring Mail + JavaMail
+Notifications e-mail
+
+Front-end
+Bootstrap 5 + Thymeleaf
+Interface responsive
+
+Scan QR
+jsQR (JavaScript)
+Lecture QR-code via webcam
+
+Build
+Maven
+Gestion dépendances
+
+Serveur
+Apache Tomcat (embarqué)
+Déploiement
+
+Versioning
+Git / GitHub
+Gestion du code source
+
+
+8.2 Architecture MVC Spring Boot
+Modèle (@Entity JPA) : Utilisateur, Medecin, Pharmacien, Patient, Ordonnance, Medicament, Delivrance.
+Vue (Thymeleaf) : Pages HTML pour chaque espace (médecin, pharmacien, patient, admin).
+Contrôleur (@Controller) : PrescriptionController, DelivranceController, QRCodeController, AdminController.
+Service (@Service) : PrescriptionService, QRCodeService, DelivranceService, NotificationService.
+Repository (JpaRepository) : OrdonnanceRepository, UtilisateurRepository, DelivranceRepository.
+Sécurité : SecurityConfig étendant WebSecurityConfigurerAdapter avec règles par rôle.
+8.3 Organisation des packages Java
+com.prescription.app.model — Entités JPA
+com.prescription.app.repository — Interfaces Spring Data JPA
+com.prescription.app.service — Logique métier
+com.prescription.app.controller — Contrôleurs MVC
+com.prescription.app.security — Configuration Spring Security
+com.prescription.app.qrcode — Service génération/lecture QR-code (ZXing)
+com.prescription.app.dto — Data Transfer Objects
+com.prescription.app.config — Configuration mail, PDF, application
+resources/templates — Vues Thymeleaf
+resources/static — CSS, JS, images
+IX. FONCTIONNEMENT DU QR-CODE MÉDICAL
+9.1 Données encodées dans le QR-code
+Chaque QR-code contient un payload JSON chiffré et signé comprenant :
+ID unique de l'ordonnance (UUID généré par Java)
+Identifiant du médecin prescripteur
+Identifiant du patient
+Liste des médicaments, dosages et durée du traitement
+Date de prescription et date d'expiration
+Hash de vérification (SHA-256) pour garantir l'intégrité
+9.2 Flux de fonctionnement
+Étape
+Description
+
+Étape 1
+Le médecin rédige l'ordonnance et clique sur « Générer QR-code »
+
+Étape 2
+Le système Java encode les données, génère le hash SHA-256 et crée le QR-code via ZXing
+
+Étape 3
+L'ordonnance PDF avec QR-code est générée et envoyée au patient par e-mail
+
+Étape 4
+Le patient présente le QR-code (PDF ou écran) à la pharmacie
+
+Étape 5
+Le pharmacien scanne le QR-code via la webcam (jsQR) ou télécharge l'image
+
+Étape 6
+Le système vérifie l'authenticité (hash), la validité (date) et l'unicité (non déjà délivré)
+
+Étape 7
+Si valide : affichage des médicaments à délivrer, confirmation par le pharmacien
+
+Étape 8
+Délivrance enregistrée en BDD avec horodatage, QR-code invalidé, notifications envoyées
+
+
+9.3 Sécurité du QR-code
+Payload chiffré en AES-256 : les données ne sont pas lisibles en clair.
+Signature SHA-256 : toute modification du QR-code le rend invalide.
+Usage unique : le statut passe à 'DELIVRE' après la première validation.
+Date d'expiration : QR-code invalide au-delà de la durée configurée.
+Traçabilité complète : toute tentative de scan est journalisée.
+X. CONTRAINTES DU PROJET
+10.1 Contraintes techniques
+Java 17 LTS minimum (compatibilité Spring Boot 3.x)
+Compatibilité navigateurs modernes avec accès webcam (HTTPS requis pour API Camera)
+Base de données normalisée respectant les formes normales (3NF)
+Chiffrement AES-256 des données médicales sensibles en base
+10.2 Contraintes médicales et réglementaires
+Confidentialité absolue des données médicales (secret médical)
+Traçabilité et non-répudiation : toute action est enregistrée avec horodatage
+Conformité avec la législation béninoise sur la santé numérique
+Vérification de l'identité professionnelle des médecins et pharmaciens
+10.3 Contraintes académiques
+Développement entièrement en Java dans le cadre du mémoire de Licence
+Documentation complète : Javadoc, rapport UML, diagrammes de classes et séquences
+Code source versionné sur Git avec historique de commits
+Respect du calendrier académique et des délais de soutenance
+XI. PLANIFICATION PRÉVISIONNELLE
+Phase
+Activités
+Durée
+
+Phase 1 – Analyse
+Recueil des besoins, étude de l'existant, diagrammes UML Use Case
+2 semaines
+
+Phase 2 – Conception
+Diagramme de classes, modèle BDD, maquettes UI/UX, flux QR-code
+2 semaines
+
+Phase 3 – Dev Back-end
+Spring Boot, JPA/Hibernate, Spring Security, service QR-code ZXing
+4 semaines
+
+Phase 4 – Dev Front-end
+Thymeleaf + Bootstrap, espace médecin, pharmacien, patient
+2 semaines
+
+Phase 5 – Intégration QR
+Intégration scan webcam (jsQR), génération PDF ordonnance (iText)
+2 semaines
+
+Phase 6 – Tests
+JUnit 5, tests de sécurité OWASP, tests de charge JMeter
+2 semaines
+
+Phase 7 – Déploiement
+VPS Linux, Tomcat, configuration HTTPS/SSL
+1 semaine
+
+Phase 8 – Rédaction
+Rapport de mémoire complet, préparation soutenance
+3 semaines
+
+
+XII. LIVRABLES ATTENDUS
+L1 – Cahier des charges validé (ce document)
+L2 – Diagrammes UML : cas d'utilisation, classes, séquences (prescription, délivrance QR-code)
+L3 – Modèle Entité-Association (MCD) et modèle relationnel de la base de données
+L4 – Maquettes graphiques des interfaces (wireframes)
+L5 – Code source Java complet (Spring Boot + Maven) versionné sur GitHub
+L6 – Scripts SQL de création et peuplement de la base de données
+L7 – Rapport de tests (JUnit 5, tests de sécurité, tests fonctionnels)
+L8 – Manuel d'utilisation (médecin, pharmacien, patient, administrateur)
+L9 – Rapport de mémoire complet et structuré
+L10 – Présentation PowerPoint pour la soutenance
+XIII. GLOSSAIRE
+QR-code : Quick Response Code : code-barres 2D encodant des informations lisibles par caméra.
+ZXing : Zebra Crossing : bibliothèque Java open-source de génération et lecture de QR-codes.
+Spring Boot : Framework Java facilitant le développement d'applications web autonomes.
+Spring Security : Module Spring gérant authentification, autorisation et protection CSRF.
+JPA/Hibernate : API Java et implémentation ORM pour la persistance des données en base.
+Thymeleaf : Moteur de templates Java pour générer des pages HTML côté serveur.
+SHA-256 : Algorithme de hachage cryptographique garantissant l'intégrité des données.
+AES-256 : Standard de chiffrement symétrique pour protéger les données sensibles.
+iText : Bibliothèque Java de génération de documents PDF.
+jsQR : Bibliothèque JavaScript de lecture de QR-code via la caméra du navigateur.
+BCrypt : Algorithme de hachage sécurisé des mots de passe utilisé par Spring Security.
+JWT : JSON Web Token : jeton d'authentification sécurisé et autonome.
+MVC : Modèle-Vue-Contrôleur : patron d'architecture logicielle.
+UML : Unified Modeling Language : langage de modélisation des systèmes informatiques.
+Prescription numérique : Ordonnance médicale dématérialisée, sécurisée et transmissible électroniquement.
+
+Document rédigé le 03/03/2026
